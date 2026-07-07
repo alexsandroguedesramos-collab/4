@@ -1,273 +1,160 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Blog</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+import 'package:flutter/material.dart';
 
-<body>
-
-<header>
-    <h1>Meu Blog</h1>
-    <p>Notícias e informações</p>
-</header>
-
-<main>
-
-    <article>
-        <img src="img/imagem1.jpg" alt="Imagem da postagem">
-        <h2>Minha primeira postagem</h2>
-        <p>
-            Conteúdo do artigo do blog.
-        </p>
-        <p>
-            Autor:
-            <a href="https://www.exemplo.com" target="_blank" rel="noopener noreferrer">
-                João Silva
-            </a>
-        </p>
-    </article>
-
-    <article>
-        <img src="img/imagem2.jpg" alt="Imagem da postagem">
-        <h2>Segunda postagem</h2>
-        <p>
-            Outro conteúdo para o blog.
-        </p>
-        <p>
-            Autor:
-            <a href="https://www.exemplo.com" target="_blank" rel="noopener noreferrer">
-                Maria Souza
-            </a>
-        </p>
-    </article>
-
-
-    <button class="btn-tema-escuro">🌙</button>
-    <button class="btn-voltar-topo">⬆️</button>
-
-</main>
-
-
-<script src="script.js"></script>
-
-</body>
-</html>
-:root {
-    --cor-primaria: #183C63;
-    --cor-secundaria: #3782d2;
-    --cor-fundo: #ffffff;
-    --cor-texto: #151428;
-    --cor-contraste: #f3eef7;
-    --cor-botao: #f9f9f9;
-    --cor-destaque: #ff6b00;
-    --fonte-texto: 'Segoe UI', sans-serif;
+void main() {
+  runApp(const EstudaIA());
 }
 
+class EstudaIA extends StatelessWidget {
+  const EstudaIA({super.key});
 
-/* Transição suave */
-* {
-    transition: background-color 0.3s ease, 
-                transform 0.3s ease,
-                box-shadow 0.3s ease;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'EstudaIA',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const ChatPage(),
+    );
+  }
 }
 
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
 
-body {
-    max-width: 100vw;
-    margin: 0;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
-    font-family: var(--fonte-texto);
+  @override
+  State<ChatPage> createState() => _ChatPageState();
 }
 
+class _ChatPageState extends State<ChatPage> {
 
-header {
-    background-color: var(--cor-primaria);
-    color: white;
-    padding: 20px;
-}
+  final TextEditingController controller = TextEditingController();
 
+  List<Map<String, String>> mensagens = [
+    {
+      "usuario": "IA",
+      "texto": "Olá! Sou a EstudaIA. Como posso ajudar nos seus estudos?"
+    }
+  ];
 
-main {
-    padding: 20px;
-}
+  void enviarMensagem() {
+    String pergunta = controller.text;
 
+    if (pergunta.isEmpty) return;
 
-article {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
+    setState(() {
+      mensagens.add({
+        "usuario": "Aluno",
+        "texto": pergunta
+      });
 
-    border-radius: 10px;
-    background-color: var(--cor-fundo);
+      mensagens.add({
+        "usuario": "IA",
+        "texto": responderIA(pergunta)
+      });
 
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
+      controller.clear();
+    });
+  }
 
+  String responderIA(String pergunta) {
 
-/* Efeito ao passar o mouse */
-article:hover {
+    pergunta = pergunta.toLowerCase();
 
-    transform: scale(1.02);
-
-    box-shadow:
-    0 6px 15px rgba(55,130,210,0.5);
-}
-
-
-img {
-    max-width: 100%;
-    border-radius: 8px;
-}
-
-
-a {
-    color: var(--cor-secundaria);
-}
-
-
-/* Tema escuro */
-
-.tema-escuro {
-
-    --cor-primaria: #c9e3ff;
-    --cor-secundaria: #70b7ff;
-    --cor-fundo: #151428;
-    --cor-texto: #ffffff;
-    --cor-contraste: #f3eef7;
-    --cor-botao: #222222;
-    --cor-destaque: #ffd60a;
-
-}
-
-
-/* Ajustes no modo escuro */
-
-.tema-escuro a {
-    color: var(--cor-secundaria);
-}
-
-
-.tema-escuro p {
-    color: var(--cor-texto);
-}
-
-
-.tema-escuro header p {
-    color: var(--cor-contraste);
-}
-
-
-/* Sombra dos cards no modo escuro */
-
-.tema-escuro article {
-
-    box-shadow:
-    0 2px 8px rgba(120,180,255,0.4);
-
-}
-
-
-.tema-escuro article:hover {
-
-    box-shadow:
-    0 8px 20px rgba(120,200,255,0.7);
-
-}
-
-
-
-/* Botão tema */
-
-.btn-tema-escuro {
-
-    position: fixed;
-
-    bottom: 16px;
-
-    right: 16px;
-
-    font-size: 32px;
-
-    padding: 12px;
-
-    background-color: var(--cor-primaria);
-
-    border-radius: 50%;
-
-    border: none;
-
-    cursor: pointer;
-
-}
-
-
-/* Botão voltar ao topo */
-
-.btn-voltar-topo {
-
-    position: fixed;
-
-    bottom: 80px;
-
-    right: 16px;
-
-    font-size: 24px;
-
-    padding: 12px;
-
-    background-color: var(--cor-secundaria);
-
-    border-radius: 50%;
-
-    border: none;
-
-    cursor: pointer;
-
-}
-const btnTemaEscuro = document.querySelector(".btn-tema-escuro");
-
-btnTemaEscuro.addEventListener("click", mudaTema);
-
-
-function mudaTema() {
-
-    const corpoPagina = document.body;
-
-
-    if (corpoPagina.classList.contains("tema-escuro")) {
-
-        corpoPagina.classList.remove("tema-escuro");
-
-    } else {
-
-        corpoPagina.classList.add("tema-escuro");
-
+    if (pergunta.contains("matemática")) {
+      return "Matemática envolve números, cálculos e raciocínio lógico. Posso ajudar com exercícios!";
     }
 
+    if (pergunta.contains("história")) {
+      return "História estuda acontecimentos importantes do passado e suas consequências.";
+    }
+
+    if (pergunta.contains("português")) {
+      return "Português envolve leitura, escrita, gramática e interpretação de textos.";
+    }
+
+    return "Essa é uma ótima pergunta! Vou ajudar você a aprender mais sobre esse assunto.";
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("📚 EstudaIA"),
+        centerTitle: true,
+      ),
+
+      body: Column(
+        children: [
+
+          Expanded(
+            child: ListView.builder(
+              itemCount: mensagens.length,
+              itemBuilder: (context, index) {
+
+                final mensagem = mensagens[index];
+
+                return Container(
+                  margin: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(12),
+
+                  decoration: BoxDecoration(
+                    color: mensagem["usuario"] == "IA"
+                        ? Colors.blue[100]
+                        : Colors.green[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        mensagem["usuario"]!,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 5),
+
+                      Text(mensagem["texto"]!)
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+
+
+          Padding(
+            padding: const EdgeInsets.all(8),
+
+            child: Row(
+              children: [
+
+                Expanded(
+                  child: TextField(
+                    controller: controller,
+                    decoration: const InputDecoration(
+                      hintText: "Digite sua dúvida...",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: enviarMensagem,
+                )
+
+              ],
+            ),
+          )
+
+        ],
+      ),
+    );
+  }
 }
-
-
-
-const btnVoltarTopo = document.querySelector(".btn-voltar-topo");
-
-
-btnVoltarTopo.addEventListener("click", function () {
-
-    window.scrollTo(0,0);
-
-});
-meu-blog/
-│
-├── index.html
-├── style.css
-├── script.js
-│
-└── img/
-    ├── imagem1.jpg
-    └── imagem2.jpg
